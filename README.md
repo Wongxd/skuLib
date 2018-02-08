@@ -4,6 +4,22 @@
 可自由扩展，实现类似淘宝规格选择的效果。
 
 ***
+
+###添加依赖
+      
+     //你的项目中一定要使用recycleview
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+
+    //加入本依赖库
+    implementation('com.github.Wongxd:skuLib:v0.0.5') {
+        exclude group: 'com.android.support'
+    }
+
+
+
+
+
+***
 ###使用方式
   
  kotlin:
