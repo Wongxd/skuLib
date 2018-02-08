@@ -3,8 +3,6 @@ package io.github.wongxd.skulibray.specSelect.custom;
 import android.content.Context;
 import android.widget.Toast;
 
-import java.lang.ref.WeakReference;
-
 
 /**
  * Created by wongxd on 2018/2/8.
@@ -13,7 +11,7 @@ import java.lang.ref.WeakReference;
 
 public class TU {
     private static volatile Toast toast;
-    public static WeakReference<Context> c;
+    public static Context c;
 
 
     private TU() {
@@ -22,7 +20,7 @@ public class TU {
     }
 
 
-    public static void register(WeakReference<Context> ctx) {
+    public static void register(Context ctx) {
         c = ctx;
     }
 
@@ -31,7 +29,7 @@ public class TU {
         if (toast == null) {
             synchronized (TU.class) {
                 if (toast == null) {
-                    toast = Toast.makeText(c.get(), msg, Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(c, msg, Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
@@ -42,7 +40,7 @@ public class TU {
     }
 
     public static void t(int msgRes) {
-        t(c.get().getString(msgRes));
+        t(c.getString(msgRes));
     }
 
 

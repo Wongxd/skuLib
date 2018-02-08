@@ -2,7 +2,6 @@ package io.github.wongxd.skulibray.specSelect;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -423,7 +421,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
      */
     public static SpecSelectFragment showDialog(AppCompatActivity aty, String goodImg, SpecBean specBean) {
 
-        TU.register(new WeakReference<Context>(aty.getApplicationContext()));
+        TU.register(aty.getApplicationContext());
         goodImgPath = goodImg;
         bean = specBean;
         FragmentManager fragmentManager = aty.getSupportFragmentManager();
