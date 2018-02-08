@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.github.wongxd.demo.AtyMainActivity">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!" />
+
+    <ImageView
+        android:id="@+id/iv_main"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_gravity="center" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btn_java"
+        android:text="javaActivity"
+        android:layout_marginBottom="70dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:text="开始选择规格" />
+</FrameLayout>

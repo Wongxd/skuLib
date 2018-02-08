@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--屏幕底部的dialog-->
+    <style name="BottomDialog" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <!-- Dialog进入及退出动画 -->
+        <!--<item name="android:windowAnimationStyle">@style/BottomToTopAnim</item>-->
+    </style>
+
+    <!--<style name="BottomToTopAnim" parent="android:Animation">-->
+        <!--<item name="@android:windowEnterAnimation">@anim/bottomview_anim_enter</item>-->
+        <!--<item name="@android:windowExitAnimation">@anim/bottomview_anim_exit</item>-->
+    <!--</style>-->
+</resources>
