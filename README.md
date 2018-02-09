@@ -16,8 +16,9 @@
     implementation 'com.android.support:recyclerview-v7:26.1.0'
 
     //加入本依赖库
-    implementation('com.github.Wongxd:skuLib:v0.0.5') {
-        exclude group: 'com.android.support'
+    //vx.y.z 替换成具体的release版本号 如：v0.0.6
+    implementation('com.github.Wongxd:skuLib:vx.y.z') { 
+        exclude group: 'com.android.support'
     }
 
 
