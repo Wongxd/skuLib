@@ -7,12 +7,17 @@ import java.util.List;
  * <p>
  * 规格信息的pojo
  * <p>
- * 你的数据可以多余当前给出的，但不能没有这个类中定义的数据.
- * 而且，如果你的 AttrsBean {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.AttrsBean} 中 的多余的数据不能被获取到。
- * CombsBean  {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.CombsBean} 则可以获取到，所以，如果你有扩展的数据，建议你放到
- * CombsBean 中.
+ * 你的 CombsBean 数据可以多余当前给出的，但不能没有这个类中定义的数据.
  * <p>
- * 可能你们后台返回的 AttrsBean 中，还会有 对应于 key 的 唯一的 id 值，以供属性分组使用，但是你可以选择不使用，因为，
+ * 注意，ValueBean {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.AttrsBean.ValueBean} 是不可以被拓展的。因为在
+ * AttrsBean {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.AttrsBean} 中 value 是个 List ，
+ * 经过查看sun的说明文档，在java中是”不能创建一个确切的泛型类型的数组”的。
+ * 所以，把 AttrsBean {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.AttrsBean} 设置为 final。
+ * <p>
+ * CombsBean  {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.CombsBean} 则可以拓展，所以，如果你有自定义的数据，你可放到
+ * 继承自 CombsBean  的pojo中.
+ * <p>
+ * 可能你们后台返回的 AttrsBean.ValueBean 中，还会有 对应于 key 的 唯一的 id 值，以供属性分组使用，但是你可以选择不使用，因为，
  * 在代码中，我已经为每个属性组生成了 groupId。
  */
 
@@ -50,14 +55,14 @@ public class SpecBean {
         this.combs = combs;
     }
 
-    public static class AttrsBean<T extends AttrsBean.ValueBean> {
+    public static final class AttrsBean {
         /**
          * value : [{"id":3,"name":"红色"}]
          * key : 颜色
          */
 
         private String key;
-        private List<T> value;
+        private List<ValueBean> value;
 
         public String getKey() {
             return key;
@@ -67,15 +72,15 @@ public class SpecBean {
             this.key = key;
         }
 
-        public List<T> getValue() {
+        public List<ValueBean> getValue() {
             return value;
         }
 
-        public void setValue(List<T> value) {
+        public void setValue(List<ValueBean> value) {
             this.value = value;
         }
 
-        public static class ValueBean {
+        public static final class ValueBean {
             /**
              * id : 3   对应 combs->comb 中的数字
              * name : 红色
