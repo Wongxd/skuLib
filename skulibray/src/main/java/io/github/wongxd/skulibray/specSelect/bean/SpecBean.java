@@ -50,14 +50,14 @@ public class SpecBean {
         this.combs = combs;
     }
 
-    public static class AttrsBean {
+    public static class AttrsBean<T extends AttrsBean.ValueBean> {
         /**
          * value : [{"id":3,"name":"红色"}]
          * key : 颜色
          */
 
         private String key;
-        private List<ValueBean> value;
+        private List<T> value;
 
         public String getKey() {
             return key;
@@ -67,11 +67,11 @@ public class SpecBean {
             this.key = key;
         }
 
-        public List<ValueBean> getValue() {
+        public List<T> getValue() {
             return value;
         }
 
-        public void setValue(List<ValueBean> value) {
+        public void setValue(List<T> value) {
             this.value = value;
         }
 
