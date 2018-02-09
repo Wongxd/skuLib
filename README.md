@@ -1,4 +1,7 @@
 # skuLib
+
+
+
 快速实现商品规格选择
 
 实现类似淘宝规格选择的效果。
@@ -12,13 +15,15 @@
 ***
 
 ###添加依赖
+
+[![](https://jitpack.io/v/Wongxd/skuLib.svg)](https://jitpack.io/#Wongxd/skuLib)
       
-     //你的项目中一定要使用recycleview
+     // 你的项目中一定要使用recycleview
     implementation 'com.android.support:recyclerview-v7:x.x.x'
 
-    //加入本依赖库
- 	//vx.y.z 替换成具体的release版本号 如：v0.0.6
-	implementation('com.github.Wongxd:skuLib:vx.y.z') { 
+    // 加入本依赖库
+ 	// x.y.z 替换成具体的release版本号 如：0.0.6
+	implementation('com.github.Wongxd:skuLib:x.y.z') { 
 		exclude group: 'com.android.support'
     }
 
