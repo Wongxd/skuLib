@@ -1,9 +1,11 @@
 # skuLib
 快速实现商品规格选择
 
-可自由扩展，实现类似淘宝规格选择的效果。
+实现类似淘宝规格选择的效果。
 
-更多信息请查看源码。
+数据可自由扩展。
+
+源码有较为详细的注释，更多信息请查看源码。
 
 
 ![演示](/art/demo.gif)
@@ -13,12 +15,12 @@
 ###添加依赖
       
      //你的项目中一定要使用recycleview
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:x.x.x'
 
     //加入本依赖库
-    //vx.y.z 替换成具体的release版本号 如：v0.0.6
-    implementation('com.github.Wongxd:skuLib:vx.y.z') { 
-        exclude group: 'com.android.support'
+ 	//vx.y.z 替换成具体的release版本号 如：v0.0.6
+	implementation('com.github.Wongxd:skuLib:vx.y.z') { 
+		exclude group: 'com.android.support'
     }
 
 
