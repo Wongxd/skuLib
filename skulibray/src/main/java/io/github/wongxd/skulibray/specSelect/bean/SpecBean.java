@@ -14,8 +14,7 @@ import java.util.List;
  * 经过查看sun的说明文档，在java中是”不能创建一个确切的泛型类型的数组”的。
  * 所以，把 AttrsBean {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.AttrsBean} 设置为 final。
  * <p>
- * CombsBean  {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.CombsBean} 则可以拓展，所以，如果你有自定义的数据，你可放到
- * 继承自 CombsBean  的pojo中.
+ * CombsBean  {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean.CombsBean}  同理
  * <p>
  * 可能你们后台返回的 AttrsBean.ValueBean 中，还会有 对应于 key 的 唯一的 id 值，以供属性分组使用，但是你可以选择不使用，因为，
  * 在代码中，我已经为每个属性组生成了 groupId。
@@ -107,7 +106,7 @@ public class SpecBean {
         }
     }
 
-    public static class CombsBean {
+    public static final class CombsBean {
         /**
          * id : 10
          * productId : 5
@@ -119,7 +118,8 @@ public class SpecBean {
          */
 
         private long id = 0L; // 有的 后台 使用 id 去判断选择的规格
-        private int productId;
+        private long productId;
+        private String productName;
         private int stock;
         private String comb;  // 有的 后台 使用 组合 去判断选择的规格
         private String desc;
@@ -134,12 +134,20 @@ public class SpecBean {
             this.id = id;
         }
 
-        public int getProductId() {
+        public long getProductId() {
             return productId;
         }
 
-        public void setProductId(int productId) {
+        public void setProductId(long productId) {
             this.productId = productId;
+        }
+
+        public String getProductName() {
+            return productName;
+        }
+
+        public void setProductName(String productName) {
+            this.productName = productName;
         }
 
         public int getStock() {
