@@ -22,7 +22,7 @@
     implementation 'com.android.support:recyclerview-v7:x.x.x'
 
     // 加入本依赖库
- 	// x.y.z 替换成具体的release版本号 如：0.0.6
+ 	// x.y.z 替换成具体的release版本号 如：0.0.7
 	implementation('com.github.Wongxd:skuLib:x.y.z') { 
 		exclude group: 'com.android.support'
     }
@@ -36,35 +36,37 @@
   
  kotlin:
 
- 		SpecSelectFragment.showDialog(this, goodImgUrl, spec)
-                .setShowGoodImgListener { iv, imgUrl ->
-                    Log.e(TAG, "商品图片地址= $imgUrl    iv对象--$iv")
-                    Glide.with(this).load(imgUrl).centerCrop().into(iv)
+ 		 SpecSelectFragment.showDialog(this, null, defaultAttrList, spec)
+                        .setShowGoodImgListener { iv, imgUrl ->
+                            Log.e(TAG, "商品图片地址= $imgUrl    iv对象--$iv")
+                            Glide.with(this).load(imgUrl).placeholder(R.drawable.ic_launcher).centerCrop().into(iv)
 
-                }
-                .setSubmitSpecCombListener { combBean, num ->
-                    Log.e(TAG, " 描述---${combBean.desc}      数量---$num")
-                    tv.text = " 描述---${combBean.desc}---数量---$num"
-                }
+                        }
+                        .setSubmitSpecCombListener { combBean, num, statusRestoreList ->
+                            defaultAttrList = statusRestoreList
+                            Log.e(TAG, " 描述---${combBean.desc}      数量---$num")
+                            tv.text = " 描述---${combBean.desc}---数量---$num"
+                        }
 
 
 
 java:
 
 
-		 SpecSelectFragment.showDialog(this, "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1282625489,100434574&fm=27&gp=0.jpg", bean)
-                .setShowGoodImgListener(new ShowGoodImgListener() {
-                    @Override
-                    public void displayImg(ImageView iv, String imgUrl) {
-                        Glide.with(AtyJavaActivity.this).load(imgUrl).into(iv);
-                    }
-                })
-                .setSubmitSpecCombListener(new SubmitSpecCombListener() {
-                    @Override
-                    public void onSubmit(SpecBean.CombsBean combBean, int num) {
-                        tv.setText("描述" + combBean.getDesc() + "----数量" + num);
-                    }
-                });
+		SpecSelectFragment.showDialog(this, "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1282625489,100434574&fm=27&gp=0.jpg", bean)
+                        .setShowGoodImgListener(new ShowGoodImgListener() {
+                            @Override
+                            public void displayImg(ImageView iv, String imgUrl) {
+                                Glide.with(AtyJavaActivity.this).load(imgUrl)
+                                        .placeholder(R.drawable.ic_launcher).into(iv);
+                            }
+                        })
+                        .setSubmitSpecCombListener(new SubmitSpecCombListener() {
+                            @Override
+                            public void onSubmit(SpecBean.CombsBean combBean, int num, List<ProductModel.AttributesEntity.AttributeMembersEntity> statusRestoreList) {
+                                tv.setText("描述" + combBean.getDesc() + "----数量" + num);
+                            }
+                        });
 
 
 
