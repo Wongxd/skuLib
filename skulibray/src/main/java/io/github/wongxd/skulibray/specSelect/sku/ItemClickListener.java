@@ -29,7 +29,7 @@ public class ItemClickListener implements SkuAdapter.OnClickListener {
     @Override
     public void onItemClickListener(int position) {
         //屏蔽不可点击
-        if (currentAdapter.getAttributeMembersEntities().get(position).getStatus() == 2) {
+        if (currentAdapter.getAttributeMembersEntities().get(position).getStatus() == ProductModel.AttributeMemberStatus.UNCHECKABLE) {
             return;
         }
         // 设置当前单选点击
@@ -37,17 +37,18 @@ public class ItemClickListener implements SkuAdapter.OnClickListener {
             if (entity.equals(currentAdapter.getAttributeMembersEntities().get(position))) {
                 String key = currentAdapter.groupName;
                 if (currentAdapter.getCurrentSelectedItem() == null || !currentAdapter.getCurrentSelectedItem().equals(entity)) {
-                    entity.setStatus(1);
+                    entity.setStatus(ProductModel.AttributeMemberStatus.CHECKED);
                     //添加已经选择的对象
                     currentAdapter.setCurrentSelectedItem(entity);
                     mUiData.getSelectedMap().put(key, entity);
                 } else {
-                    entity.setStatus(0);
+                    entity.setStatus(ProductModel.AttributeMemberStatus.CHECKABLE);
                     currentAdapter.setCurrentSelectedItem(null);
                     mUiData.getSelectedMap().remove(key);
                 }
             } else {
-                entity.setStatus(entity.getStatus() == 2 ? 2 : 0);
+                entity.setStatus(entity.getStatus() == ProductModel.AttributeMemberStatus.UNCHECKABLE ? ProductModel.AttributeMemberStatus.UNCHECKABLE :
+                        ProductModel.AttributeMemberStatus.CHECKABLE);
             }
         }
         //存放当前被点击的按钮
@@ -62,11 +63,11 @@ public class ItemClickListener implements SkuAdapter.OnClickListener {
             for (ProductModel.AttributesEntity.AttributeMembersEntity entity : mUiData.getAdapters().get(i).getAttributeMembersEntities()) {
                 // 处理没有数据和没有库存(检测单个)
                 if (mUiData.getResult().get(entity.getAttributeMemberId() + "") == null || mUiData.getResult().get(entity.getAttributeMemberId() + "").getStock() <= 0) {
-                    entity.setStatus(2);
+                    entity.setStatus(ProductModel.AttributeMemberStatus.UNCHECKABLE);
                 } else if (entity.equals(mUiData.getAdapters().get(i).getCurrentSelectedItem())) {
-                    entity.setStatus(1);
+                    entity.setStatus(ProductModel.AttributeMemberStatus.CHECKED);
                 } else {
-                    entity.setStatus(0);
+                    entity.setStatus(ProductModel.AttributeMemberStatus.CHECKABLE);
                 }
                 // 冒泡排序
                 List<ProductModel.AttributesEntity.AttributeMembersEntity> cacheSelected = new ArrayList<>();
@@ -97,9 +98,10 @@ public class ItemClickListener implements SkuAdapter.OnClickListener {
 //                Log.e(TAG, "key = " + buffer.substring(0, buffer.length() - 1));
                 //TODO 检查数据
                 if (mUiData.getResult().get(buffer.substring(0, buffer.length() - 1)) != null && mUiData.getResult().get(buffer.substring(0, buffer.length() - 1)).getStock() > 0) {
-                    entity.setStatus(entity.getStatus() == 1 ? 1 : 0);
+                    entity.setStatus(entity.getStatus() == ProductModel.AttributeMemberStatus.CHECKED ? ProductModel.AttributeMemberStatus.CHECKED :
+                            ProductModel.AttributeMemberStatus.CHECKABLE);
                 } else {
-                    entity.setStatus(2);
+                    entity.setStatus(ProductModel.AttributeMemberStatus.UNCHECKABLE);
                 }
             }
             mUiData.getAdapters().get(i).notifyDataSetChanged();

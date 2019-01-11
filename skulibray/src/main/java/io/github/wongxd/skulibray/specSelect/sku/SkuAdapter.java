@@ -74,17 +74,17 @@ public class SkuAdapter extends RecyclerView.Adapter<SkuAdapter.ViewHolder> {
         public void setData(ProductModel.AttributesEntity.AttributeMembersEntity entity) {
             mTextView.setText(entity.getName());
             switch (entity.getStatus()) {
-                case 0:
+                case CHECKABLE:
                     mTextView.setAlpha(1f);
                     mTextView.setBackgroundResource(R.drawable.normal_bg);
                     mTextView.setTextColor(Color.BLACK);
                     break;
-                case 1:
+                case CHECKED:
                     mTextView.setAlpha(1f);
                     mTextView.setBackgroundResource(R.drawable.checked_bg);
                     mTextView.setTextColor(Color.WHITE);
                     break;
-                case 2:
+                case UNCHECKABLE:
                     mTextView.setAlpha(0.4f);
                     mTextView.setBackgroundResource(R.drawable.unclickable_bg);
                     mTextView.setTextColor(Color.BLACK);

@@ -270,8 +270,8 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
         specId = s;
         productStock = mUiData.getResult().get(s).getStock();
         price = mUiData.getResult().get(s).getPrice();
-        tvPrice.setText("￥ " + price);
-        tvStock.setText("库存 " + productStock);
+        tvPrice.setText("¥ " + price);
+        tvStock.setText("库存： " + productStock);
         try {
             String specImgPath = getCombsBean().getSpecImg();
             if (showGoodImgListener != null) {
@@ -314,8 +314,9 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
      */
     private void initData(SpecBean bean) {
 
-        if (showGoodImgListener != null) {
-            showGoodImgListener.displayImg(iv, goodImgPath);
+        if (showGoodImgListener != null && goodImgPath != null) {
+            if (!TextUtils.isEmpty(goodImgPath))
+                showGoodImgListener.displayImg(iv, goodImgPath);
         }
 
         List<SpecBean.AttrsBean> attrs = bean.getAttrs();
@@ -393,17 +394,21 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
             for (ProductModel.AttributesEntity.AttributeMembersEntity entity : mUiData.getAdapters().get(i).getAttributeMembersEntities()) {
                 if (mUiData.getResult().get(entity.getAttributeMemberId() + "") == null
                         || mUiData.getResult().get(entity.getAttributeMemberId() + "").getStock() <= 0) {
-                    entity.setStatus(2);
+                    entity.setStatus(ProductModel.AttributeMemberStatus.UNCHECKABLE);
                 }
             }
         }
+
+
+
 
 
     }
 
 
     private static String goodImgPath;
-    private static SpecBean bean;
+    private static SpecBean.CombsBean checkedCombBean = null;
+    private static SpecBean bean = null;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -412,18 +417,54 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
+     * 确认按钮的颜色、规格选中后的颜色 可在 color 中定义   <color name="app_color">#3F51B5</color>,即可实现颜色自定义
+     * <p>
+     * <p>
      * 可以避免重复
      *
      * @param aty
-     * @param goodImg  商品展示的图片
-     * @param specBean 规格对象 {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean}
+     * @param allSpecBean 规格对象 {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean}
      * @return
      */
-    public static SpecSelectFragment showDialog(AppCompatActivity aty, String goodImg, SpecBean specBean) {
+    public static SpecSelectFragment showDialog(AppCompatActivity aty, @NonNull SpecBean allSpecBean) {
+        return showDialog(aty, null, null, allSpecBean);
+    }
+
+    /**
+     * 确认按钮的颜色、规格选中后的颜色 可在 color 中定义   <color name="app_color">#3F51B5</color>,即可实现颜色自定义
+     * <p>
+     * <p>
+     * 可以避免重复
+     *
+     * @param aty
+     * @param defaultGoodImg 商品默认展示的图片，如果不需要选中，传入 null
+     * @param allSpecBean    规格对象 {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean}
+     * @return
+     */
+    public static SpecSelectFragment showDialog(AppCompatActivity aty, @Nullable String defaultGoodImg, @NonNull SpecBean allSpecBean) {
+        return showDialog(aty, defaultGoodImg, null, allSpecBean);
+    }
+
+
+    /**
+     * 确认按钮的颜色、规格选中后的颜色 可在 color 中定义   <color name="app_color">#3F51B5</color>,即可实现颜色自定义
+     * <p>
+     * <p>
+     * 可以避免重复
+     *
+     * @param aty
+     * @param defaultGoodImg         商品默认展示的图片，如果不需要选中，传入 null
+     * @param defaultCheckedCombBean 商品默认选中规格，如果不需要选中，传入 null
+     * @param allSpecBean            规格对象 {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean}
+     * @return
+     */
+    public static SpecSelectFragment showDialog(AppCompatActivity aty, @Nullable String defaultGoodImg,
+                                                @Nullable SpecBean.CombsBean defaultCheckedCombBean, @NonNull SpecBean allSpecBean) {
 
         TU.register(aty.getApplicationContext());
-        goodImgPath = goodImg;
-        bean = specBean;
+        goodImgPath = defaultGoodImg;
+        checkedCombBean = defaultCheckedCombBean;
+        bean = allSpecBean;
         FragmentManager fragmentManager = aty.getSupportFragmentManager();
         SpecSelectFragment bottomDialogFragment =
                 (SpecSelectFragment) fragmentManager.findFragmentByTag(TAG);
@@ -441,7 +482,6 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
 
         return bottomDialogFragment;
     }
-
 
     /**
      * 设置展示图片的listener

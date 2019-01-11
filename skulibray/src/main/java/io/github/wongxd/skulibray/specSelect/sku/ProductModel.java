@@ -33,6 +33,10 @@ public class ProductModel {
         this.attributes = attributes;
     }
 
+    public enum AttributeMemberStatus {
+        CHECKABLE, CHECKED, UNCHECKABLE
+    }
+
     public static class AttributesEntity {
 
         private int id;
@@ -68,7 +72,7 @@ public class ProductModel {
             private int attributeGroupId;
             private int attributeMemberId;
             private String name;
-            private int status;
+            private AttributeMemberStatus status;
 
             public AttributeMembersEntity(int attributeGroupId, int attributeMemberId, String name) {
                 this.attributeGroupId = attributeGroupId;
@@ -84,11 +88,11 @@ public class ProductModel {
                 return entity.getName().equals(name) && entity.getAttributeGroupId() == attributeGroupId && entity.getAttributeMemberId() == attributeMemberId;
             }
 
-            public int getStatus() {
+            public AttributeMemberStatus getStatus() {
                 return status;
             }
 
-            public void setStatus(int status) {
+            public void setStatus(AttributeMemberStatus status) {
                 this.status = status;
             }
 
