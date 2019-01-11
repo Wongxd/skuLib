@@ -15,20 +15,17 @@ public class UiData {
      * 当前选择的规格组合
      */
 
-    Map<String, ProductModel.AttributesEntity.AttributeMembersEntity> selectedMap = new HashMap<>();
+    private Map<String, ProductModel.AttributesEntity.AttributeMembersEntity> selectedMap = new HashMap<>();
 
     public Map<String, ProductModel.AttributesEntity.AttributeMembersEntity> getSelectedMap() {
         return selectedMap;
     }
 
-    public void setSelectedMap(Map<String, ProductModel.AttributesEntity.AttributeMembersEntity> selectedMap) {
-        this.selectedMap = selectedMap;
-    }
 
     /**
      * 所有规格 的 组名
      */
-    List<String> groupNameList = new ArrayList<String>();
+    private List<String> groupNameList = new ArrayList<String>();
 
     public List<String> getGroupNameList() {
         return groupNameList;
@@ -40,21 +37,18 @@ public class UiData {
 
 
     // 保存多组adapter
-    List<SkuAdapter> adapters = new ArrayList<>();
+    private List<SkuAdapter> adapters = new ArrayList<>();
 
     //存放被选中的按钮对应的数据
-    List<ProductModel.AttributesEntity.AttributeMembersEntity> selectedEntities = new ArrayList<>();
+    private List<ProductModel.AttributesEntity.AttributeMembersEntity> selectedEntities = new ArrayList<>();
 
     //存放计算结果
-    Map<String, BaseSkuModel> result;
+    private Map<String, BaseSkuModel> result;
 
     public List<SkuAdapter> getAdapters() {
         return adapters;
     }
 
-    public void setAdapters(List<SkuAdapter> adapters) {
-        this.adapters = adapters;
-    }
 
     public Map<String, BaseSkuModel> getResult() {
         return result;
@@ -69,7 +63,4 @@ public class UiData {
         return selectedEntities;
     }
 
-    public void setSelectedEntities(List<ProductModel.AttributesEntity.AttributeMembersEntity> selectedEntities) {
-        this.selectedEntities = selectedEntities;
-    }
 }

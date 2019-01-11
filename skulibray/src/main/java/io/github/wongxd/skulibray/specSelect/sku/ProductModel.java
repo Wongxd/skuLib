@@ -34,7 +34,7 @@ public class ProductModel {
     }
 
     public enum AttributeMemberStatus {
-        CHECKABLE, CHECKED, UNCHECKABLE
+        CHECKABLE , CHECKED, UNCHECKABLE
     }
 
     public static class AttributesEntity {

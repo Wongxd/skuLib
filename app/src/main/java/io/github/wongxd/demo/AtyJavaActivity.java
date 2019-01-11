@@ -10,10 +10,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import io.github.wongxd.skulibray.specSelect.SpecSelectFragment;
 import io.github.wongxd.skulibray.specSelect.bean.SpecBean;
 import io.github.wongxd.skulibray.specSelect.listener.ShowGoodImgListener;
 import io.github.wongxd.skulibray.specSelect.listener.SubmitSpecCombListener;
+import io.github.wongxd.skulibray.specSelect.sku.ProductModel;
 
 /**
  * Created by wongxd on 2018/2/8.
@@ -58,7 +61,7 @@ public class AtyJavaActivity extends AppCompatActivity {
                 })
                 .setSubmitSpecCombListener(new SubmitSpecCombListener() {
                     @Override
-                    public void onSubmit(SpecBean.CombsBean combBean, int num) {
+                    public void onSubmit(SpecBean.CombsBean combBean, int num, List<ProductModel.AttributesEntity.AttributeMembersEntity> statusRestoreList) {
                         tv.setText("描述" + combBean.getDesc() + "----数量" + num);
                     }
                 });

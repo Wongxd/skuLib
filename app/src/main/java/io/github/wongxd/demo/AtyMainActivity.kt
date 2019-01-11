@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import io.github.wongxd.skulibray.specSelect.SpecSelectFragment
 import io.github.wongxd.skulibray.specSelect.bean.SpecBean
+import io.github.wongxd.skulibray.specSelect.sku.ProductModel
 import kotlinx.android.synthetic.main.aty_main.*
 
 class AtyMainActivity : AppCompatActivity() {
@@ -26,17 +27,20 @@ class AtyMainActivity : AppCompatActivity() {
         btn.setOnClickListener { doLogic() }
     }
 
+    private var defaultAttrList: List<ProductModel.AttributesEntity.AttributeMembersEntity>? = null
+
     private fun doLogic() {
         val goodImgUrl = "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1282625489,100434574&fm=27&gp=0.jpg"
         Glide.with(this).load(goodImgUrl).placeholder(R.drawable.ic_launcher).into(iv_main)
 
-        SpecSelectFragment.showDialog(this, goodImgUrl, spec)
+        SpecSelectFragment.showDialog(this, null, defaultAttrList, spec)
                 .setShowGoodImgListener { iv, imgUrl ->
                     Log.e(TAG, "商品图片地址= $imgUrl    iv对象--$iv")
                     Glide.with(this).load(imgUrl).placeholder(R.drawable.ic_launcher).centerCrop().into(iv)
 
                 }
-                .setSubmitSpecCombListener { combBean, num ->
+                .setSubmitSpecCombListener { combBean, num, statusRestoreList ->
+                    defaultAttrList = statusRestoreList
                     Log.e(TAG, " 描述---${combBean.desc}      数量---$num")
                     tv.text = " 描述---${combBean.desc}---数量---$num"
                 }

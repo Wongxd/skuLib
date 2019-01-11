@@ -73,23 +73,21 @@ public class SkuAdapter extends RecyclerView.Adapter<SkuAdapter.ViewHolder> {
 
         public void setData(ProductModel.AttributesEntity.AttributeMembersEntity entity) {
             mTextView.setText(entity.getName());
-            switch (entity.getStatus()) {
-                case CHECKABLE:
-                    mTextView.setAlpha(1f);
-                    mTextView.setBackgroundResource(R.drawable.normal_bg);
-                    mTextView.setTextColor(Color.BLACK);
-                    break;
-                case CHECKED:
-                    mTextView.setAlpha(1f);
-                    mTextView.setBackgroundResource(R.drawable.checked_bg);
-                    mTextView.setTextColor(Color.WHITE);
-                    break;
-                case UNCHECKABLE:
-                    mTextView.setAlpha(0.4f);
-                    mTextView.setBackgroundResource(R.drawable.unclickable_bg);
-                    mTextView.setTextColor(Color.BLACK);
-                    break;
+            ProductModel.AttributeMemberStatus status = entity.getStatus();
+            if (status == ProductModel.AttributeMemberStatus.CHECKED) {
+                mTextView.setAlpha(1f);
+                mTextView.setBackgroundResource(R.drawable.checked_bg);
+                mTextView.setTextColor(Color.WHITE);
+            } else if (status == ProductModel.AttributeMemberStatus.UNCHECKABLE) {
+                mTextView.setAlpha(0.4f);
+                mTextView.setBackgroundResource(R.drawable.unclickable_bg);
+                mTextView.setTextColor(Color.BLACK);
+            } else {
+                mTextView.setAlpha(1f);
+                mTextView.setBackgroundResource(R.drawable.normal_bg);
+                mTextView.setTextColor(Color.BLACK);
             }
+
         }
 
         public void setClick(final int position) {
@@ -105,6 +103,8 @@ public class SkuAdapter extends RecyclerView.Adapter<SkuAdapter.ViewHolder> {
 
     public interface OnClickListener {
         void onItemClickListener(int position);
+
+        void onItemClickListener(ProductModel.AttributesEntity.AttributeMembersEntity attributeMembersEntity);
     }
 
 }

@@ -27,6 +27,7 @@ import java.util.Map;
 import io.github.wongxd.skulibray.R;
 import io.github.wongxd.skulibray.specSelect.bean.SpecBean;
 import io.github.wongxd.skulibray.specSelect.custom.DensityUtil;
+import io.github.wongxd.skulibray.specSelect.custom.SkuLooper;
 import io.github.wongxd.skulibray.specSelect.custom.SpaceItemDecoration;
 import io.github.wongxd.skulibray.specSelect.custom.SpecLayoutManager;
 import io.github.wongxd.skulibray.specSelect.custom.TU;
@@ -89,6 +90,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
         submitSpecCombListener = null;
         bean = null;
         goodImgPath = null;
+        checkedComb = null;
         super.onDestroyView();
     }
 
@@ -115,7 +117,13 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(wlp);
 
-        initData(bean);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initData(bean);
+            }
+        }).start();
 
         return dialog;
     }
@@ -200,7 +208,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
 
         SpecBean.CombsBean combsBean = getCombsBean();
         if (submitSpecCombListener != null && combsBean != null) {
-            submitSpecCombListener.onSubmit(combsBean, num);
+            submitSpecCombListener.onSubmit(combsBean, num, mUiData.getSelectedEntities());
         }
 
         getDialog().dismiss();
@@ -274,7 +282,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
         tvStock.setText("库存： " + productStock);
         try {
             String specImgPath = getCombsBean().getSpecImg();
-            if (showGoodImgListener != null) {
+            if (showGoodImgListener != null && !TextUtils.isEmpty(specImgPath)) {
                 showGoodImgListener.displayImg(iv, specImgPath);
             }
         } catch (Exception e) {
@@ -314,11 +322,6 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
      */
     private void initData(SpecBean bean) {
 
-        if (showGoodImgListener != null && goodImgPath != null) {
-            if (!TextUtils.isEmpty(goodImgPath))
-                showGoodImgListener.displayImg(iv, goodImgPath);
-        }
-
         List<SpecBean.AttrsBean> attrs = bean.getAttrs();
 
         List<ProductModel.AttributesEntity> pAttr = new ArrayList<>();
@@ -357,26 +360,6 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
         products.setProductStocks(initData);
         products.setAttributes(pAttr);
 
-
-        SpaceItemDecoration decoration = new SpaceItemDecoration(DensityUtil.dp2px(3f), DensityUtil.dp2px(6f));
-        //添加list组
-        for (int i = 0; i < products.getAttributes().size(); i++) {
-            View viewList = View.inflate(getContext(), R.layout.bottom_sheet_group, null);
-            TextView tvTitle = (TextView) viewList.findViewById(R.id.tv_title);
-            RecyclerView recyclerViewBottom = (RecyclerView) viewList.findViewById(R.id.recycler_bottom);
-            SkuAdapter skuAdapter = new SkuAdapter(products.getAttributes().get(i).getAttributeMembers(), products.getAttributes().get(i).getName());
-            mUiData.getAdapters().add(skuAdapter);
-
-            SpecLayoutManager layoutManager = new SpecLayoutManager();
-            layoutManager.setAutoMeasureEnabled(true);   //必须，防止recyclerview高度为wrap时测量item高度0
-
-            recyclerViewBottom.addItemDecoration(decoration);
-            recyclerViewBottom.setLayoutManager(layoutManager);
-            recyclerViewBottom.setAdapter(skuAdapter);
-
-            tvTitle.setText(products.getAttributes().get(i).getName());
-            llSpecContainer.addView(viewList);
-        }
         // SKU 计算
         mUiData.setResult(Sku.skuCollection(products.getProductStocks()));
 
@@ -384,30 +367,91 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
             Log.d("SKU Result", "key = " + key + " value = " + mUiData.getResult().get(key));
         }
 
-        //设置点击监听器
-        for (SkuAdapter adapter : mUiData.getAdapters()) {
-            ItemClickListener listener = new ItemClickListener(mUiData, adapter);
-            adapter.setOnClickListener(listener);
-        }
-        // 初始化按钮
-        for (int i = 0; i < mUiData.getAdapters().size(); i++) {
-            for (ProductModel.AttributesEntity.AttributeMembersEntity entity : mUiData.getAdapters().get(i).getAttributeMembersEntities()) {
-                if (mUiData.getResult().get(entity.getAttributeMemberId() + "") == null
-                        || mUiData.getResult().get(entity.getAttributeMemberId() + "").getStock() <= 0) {
-                    entity.setStatus(ProductModel.AttributeMemberStatus.UNCHECKABLE);
+
+        SkuLooper.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                SpaceItemDecoration decoration = new SpaceItemDecoration(DensityUtil.dp2px(3f), DensityUtil.dp2px(6f));
+                //添加list组
+                for (int i = 0; i < products.getAttributes().size(); i++) {
+                    View viewList = View.inflate(getContext(), R.layout.bottom_sheet_group, null);
+                    TextView tvTitle = (TextView) viewList.findViewById(R.id.tv_title);
+                    RecyclerView recyclerViewBottom = (RecyclerView) viewList.findViewById(R.id.recycler_bottom);
+                    SkuAdapter skuAdapter = new SkuAdapter(products.getAttributes().get(i).getAttributeMembers(), products.getAttributes().get(i).getName());
+                    mUiData.getAdapters().add(skuAdapter);
+
+                    SpecLayoutManager layoutManager = new SpecLayoutManager();
+                    layoutManager.setAutoMeasureEnabled(true);   //必须，防止recyclerview高度为wrap时测量item高度0
+
+                    recyclerViewBottom.addItemDecoration(decoration);
+                    recyclerViewBottom.setLayoutManager(layoutManager);
+                    recyclerViewBottom.setAdapter(skuAdapter);
+
+                    tvTitle.setText(products.getAttributes().get(i).getName());
+                    llSpecContainer.addView(viewList);
                 }
+
+                //设置点击监听器
+                for (SkuAdapter adapter : mUiData.getAdapters()) {
+                    ItemClickListener listener = new ItemClickListener(mUiData, adapter);
+                    adapter.setOnClickListener(listener);
+                }
+                // 初始化按钮
+                for (int i = 0; i < mUiData.getAdapters().size(); i++) {
+                    for (ProductModel.AttributesEntity.AttributeMembersEntity entity : mUiData.getAdapters().get(i).getAttributeMembersEntities()) {
+                        if (mUiData.getResult().get(entity.getAttributeMemberId() + "") == null
+                                || mUiData.getResult().get(entity.getAttributeMemberId() + "").getStock() <= 0) {
+                            entity.setStatus(ProductModel.AttributeMemberStatus.UNCHECKABLE);
+                        }
+                    }
+                }
+
+
+                if (showGoodImgListener != null && !TextUtils.isEmpty(goodImgPath)) {
+                    showGoodImgListener.displayImg(iv, goodImgPath);
+                }
+
+
+                // 按传入的规格展示
+                if (checkedComb != null) {
+                    for (ProductModel.AttributesEntity.AttributeMembersEntity attrEntity : checkedComb) {
+
+                        for (int i = 0; i < mUiData.getAdapters().size(); i++) {
+                            final SkuAdapter curAdapter = mUiData.getAdapters().get(i);
+                            boolean isNeedBreak = false;
+                            for (final ProductModel.AttributesEntity.AttributeMembersEntity entity : curAdapter.getAttributeMembersEntities()) {
+
+                                if (attrEntity.getAttributeMemberId() == entity.getAttributeMemberId()
+                                        && attrEntity.getName().equals(entity.getName())) {
+
+                                    Log.d("wongxd", "恢复状态 name " + attrEntity.getName() + " id " + attrEntity.getAttributeMemberId());
+
+                                    curAdapter.getOnClickListener().onItemClickListener(entity);
+
+                                    isNeedBreak = true;
+                                    break;
+                                }
+                            }
+
+                            if (isNeedBreak) break;
+                        }
+
+                    }
+
+                }
+
+
             }
-        }
-
-
-
+        });
 
 
     }
 
 
     private static String goodImgPath;
-    private static SpecBean.CombsBean checkedCombBean = null;
+    private static List<ProductModel.AttributesEntity.AttributeMembersEntity> checkedComb = null;
     private static SpecBean bean = null;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -453,17 +497,17 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
      * 可以避免重复
      *
      * @param aty
-     * @param defaultGoodImg         商品默认展示的图片，如果不需要选中，传入 null
-     * @param defaultCheckedCombBean 商品默认选中规格，如果不需要选中，传入 null
-     * @param allSpecBean            规格对象 {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean}
+     * @param defaultGoodImg    商品默认展示的图片，如果不需要选中，传入 null
+     * @param statusRestoreList 商品默认选中规格，如果不需要选中，传入 null
+     * @param allSpecBean       规格对象 {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean}
      * @return
      */
     public static SpecSelectFragment showDialog(AppCompatActivity aty, @Nullable String defaultGoodImg,
-                                                @Nullable SpecBean.CombsBean defaultCheckedCombBean, @NonNull SpecBean allSpecBean) {
+                                                @Nullable List<ProductModel.AttributesEntity.AttributeMembersEntity> statusRestoreList, @NonNull SpecBean allSpecBean) {
 
         TU.register(aty.getApplicationContext());
         goodImgPath = defaultGoodImg;
-        checkedCombBean = defaultCheckedCombBean;
+        checkedComb = statusRestoreList;
         bean = allSpecBean;
         FragmentManager fragmentManager = aty.getSupportFragmentManager();
         SpecSelectFragment bottomDialogFragment =

@@ -28,13 +28,18 @@ public class ItemClickListener implements SkuAdapter.OnClickListener {
 
     @Override
     public void onItemClickListener(int position) {
+        onItemClickListener(currentAdapter.getAttributeMembersEntities().get(position));
+    }
+
+    @Override
+    public void onItemClickListener(ProductModel.AttributesEntity.AttributeMembersEntity attributeMembersEntity) {
         //屏蔽不可点击
-        if (currentAdapter.getAttributeMembersEntities().get(position).getStatus() == ProductModel.AttributeMemberStatus.UNCHECKABLE) {
+        if (attributeMembersEntity.getStatus() == ProductModel.AttributeMemberStatus.UNCHECKABLE) {
             return;
         }
         // 设置当前单选点击
         for (ProductModel.AttributesEntity.AttributeMembersEntity entity : currentAdapter.getAttributeMembersEntities()) {
-            if (entity.equals(currentAdapter.getAttributeMembersEntities().get(position))) {
+            if (entity.equals(attributeMembersEntity)) {
                 String key = currentAdapter.groupName;
                 if (currentAdapter.getCurrentSelectedItem() == null || !currentAdapter.getCurrentSelectedItem().equals(entity)) {
                     entity.setStatus(ProductModel.AttributeMemberStatus.CHECKED);
