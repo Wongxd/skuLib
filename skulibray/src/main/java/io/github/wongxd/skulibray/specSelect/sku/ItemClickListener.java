@@ -1,11 +1,14 @@
 package io.github.wongxd.skulibray.specSelect.sku;
 
 
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.wongxd.skulibray.specSelect.custom.TU;
 import io.github.wongxd.skulibray.specSelect.observer.ObserverEventCode;
 import io.github.wongxd.skulibray.specSelect.observer.ObserverHolder;
 
@@ -19,36 +22,41 @@ public class ItemClickListener implements SkuAdapter.OnClickListener {
     private String TAG = getClass().getSimpleName();
 
     private UiData mUiData;
-    private SkuAdapter currentAdapter;
+    private SkuAdapter mCurrentAdapter;
+    private String mNoStockTip;
 
-    public ItemClickListener(UiData uiData, SkuAdapter currentAdapter) {
+    public ItemClickListener(UiData uiData, SkuAdapter currentAdapter, @Nullable String noStockTip) {
         mUiData = uiData;
-        this.currentAdapter = currentAdapter;
+        mCurrentAdapter = currentAdapter;
+        mNoStockTip = noStockTip;
     }
 
     @Override
     public void onItemClickListener(int position) {
-        onItemClickListener(currentAdapter.getAttributeMembersEntities().get(position));
+        onItemClickListener(mCurrentAdapter.getAttributeMembersEntities().get(position));
     }
 
     @Override
     public void onItemClickListener(ProductModel.AttributesEntity.AttributeMembersEntity attributeMembersEntity) {
         //屏蔽不可点击
         if (attributeMembersEntity.getStatus() == ProductModel.AttributeMemberStatus.UNCHECKABLE) {
+            if (null != mNoStockTip && !TextUtils.isEmpty(mNoStockTip)) {
+                TU.t(mNoStockTip);
+            }
             return;
         }
         // 设置当前单选点击
-        for (ProductModel.AttributesEntity.AttributeMembersEntity entity : currentAdapter.getAttributeMembersEntities()) {
+        for (ProductModel.AttributesEntity.AttributeMembersEntity entity : mCurrentAdapter.getAttributeMembersEntities()) {
             if (entity.equals(attributeMembersEntity)) {
-                String key = currentAdapter.groupName;
-                if (currentAdapter.getCurrentSelectedItem() == null || !currentAdapter.getCurrentSelectedItem().equals(entity)) {
+                String key = mCurrentAdapter.groupName;
+                if (mCurrentAdapter.getCurrentSelectedItem() == null || !mCurrentAdapter.getCurrentSelectedItem().equals(entity)) {
                     entity.setStatus(ProductModel.AttributeMemberStatus.CHECKED);
                     //添加已经选择的对象
-                    currentAdapter.setCurrentSelectedItem(entity);
+                    mCurrentAdapter.setCurrentSelectedItem(entity);
                     mUiData.getSelectedMap().put(key, entity);
                 } else {
                     entity.setStatus(ProductModel.AttributeMemberStatus.CHECKABLE);
-                    currentAdapter.setCurrentSelectedItem(null);
+                    mCurrentAdapter.setCurrentSelectedItem(null);
                     mUiData.getSelectedMap().remove(key);
                 }
             } else {

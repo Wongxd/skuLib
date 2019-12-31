@@ -33,7 +33,7 @@ class AtyMainActivity : AppCompatActivity() {
         val goodImgUrl = "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1282625489,100434574&fm=27&gp=0.jpg"
         Glide.with(this).load(goodImgUrl).placeholder(R.drawable.ic_launcher).into(iv_main)
 
-        SpecSelectFragment.showDialog(this, null, defaultAttrList, spec)
+        SpecSelectFragment.showDialog(this, null, defaultAttrList, spec, "该规格已无库存！")
                 .setShowGoodImgListener { iv, imgUrl ->
                     Log.e(TAG, "商品图片地址= $imgUrl    iv对象--$iv")
                     Glide.with(this).load(imgUrl).placeholder(R.drawable.ic_launcher).centerCrop().into(iv)

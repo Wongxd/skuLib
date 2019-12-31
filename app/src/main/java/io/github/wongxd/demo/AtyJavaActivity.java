@@ -51,7 +51,7 @@ public class AtyJavaActivity extends AppCompatActivity {
         SpecBean bean = new Gson().fromJson(json, SpecBean.class);
 
 
-        SpecSelectFragment.showDialog(this, "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1282625489,100434574&fm=27&gp=0.jpg", bean)
+        SpecSelectFragment.showDialog(this, "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1282625489,100434574&fm=27&gp=0.jpg", null,bean,"该规格已无库存！")
                 .setShowGoodImgListener(new ShowGoodImgListener() {
                     @Override
                     public void displayImg(ImageView iv, String imgUrl) {

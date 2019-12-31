@@ -89,6 +89,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
         showGoodImgListener = null;
         submitSpecCombListener = null;
         bean = null;
+        noStockTip = null;
         goodImgPath = null;
         checkedComb = null;
         super.onDestroyView();
@@ -395,7 +396,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
 
                 //设置点击监听器
                 for (SkuAdapter adapter : mUiData.getAdapters()) {
-                    ItemClickListener listener = new ItemClickListener(mUiData, adapter);
+                    ItemClickListener listener = new ItemClickListener(mUiData, adapter, noStockTip);
                     adapter.setOnClickListener(listener);
                 }
                 // 初始化按钮
@@ -450,6 +451,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
     }
 
 
+    private static String noStockTip;
     private static String goodImgPath;
     private static List<ProductModel.AttributesEntity.AttributeMembersEntity> checkedComb = null;
     private static SpecBean bean = null;
@@ -503,9 +505,28 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
      * @return
      */
     public static SpecSelectFragment showDialog(AppCompatActivity aty, @Nullable String defaultGoodImg,
-                                                @Nullable List<ProductModel.AttributesEntity.AttributeMembersEntity> statusRestoreList, @NonNull SpecBean allSpecBean) {
+                                                List<ProductModel.AttributesEntity.AttributeMembersEntity> statusRestoreList, @NonNull SpecBean allSpecBean) {
+        return showDialog(aty, defaultGoodImg, statusRestoreList, allSpecBean, null);
+    }
+
+    /**
+     * 确认按钮的颜色、规格选中后的颜色 可在 color 中定义   <color name="app_color">#3F51B5</color>,即可实现颜色自定义
+     * <p>
+     * <p>
+     * 可以避免重复
+     *
+     * @param aty
+     * @param defaultGoodImg    商品默认展示的图片，如果不需要选中，传入 null
+     * @param statusRestoreList 商品默认选中规格，如果不需要选中，传入 null
+     * @param allSpecBean       规格对象 {@link io.github.wongxd.skulibray.specSelect.bean.SpecBean}
+     * @param defaultNoStockTip 点击了无库存的规格时，提示信息。如果不需要显示，传入 null
+     * @return
+     */
+    public static SpecSelectFragment showDialog(AppCompatActivity aty, @Nullable String defaultGoodImg,
+                                                List<ProductModel.AttributesEntity.AttributeMembersEntity> statusRestoreList, @NonNull SpecBean allSpecBean, @Nullable String defaultNoStockTip) {
 
         TU.register(aty.getApplicationContext());
+        noStockTip = defaultNoStockTip;
         goodImgPath = defaultGoodImg;
         checkedComb = statusRestoreList;
         bean = allSpecBean;
