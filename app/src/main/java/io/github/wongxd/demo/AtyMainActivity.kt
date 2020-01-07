@@ -132,7 +132,7 @@ class AtyMainActivity : AppCompatActivity() {
             "comb": "4,6,23,20",
             "desc": "蓝色-20KG-绵阳-30cm",
             "id": 10,
-            "price": 1.0,
+            "price": "1.0(可抵扣)",
             "productId": 5,
             "stock": 2,
             "specImg":"http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fo91049t9mj30lc0w0dnh.jpg"
@@ -141,7 +141,7 @@ class AtyMainActivity : AppCompatActivity() {
             "comb": "4,5,23,19",
             "desc": "蓝色-10KG-绵阳-20cm",
             "id": 8,
-            "price": 22.0,
+            "price": "22.0(可抵扣)",
             "productId": 5,
             "stock": 333,
              "specImg":"http://wx4.sinaimg.cn/mw600/0072bW0Xly1fo908gkyqjj30en0miabp.jpg"
@@ -150,7 +150,7 @@ class AtyMainActivity : AppCompatActivity() {
             "comb": "4,5,24,19",
             "desc": "蓝色-10KG-江油-20cm",
             "id": 9,
-            "price": 1.0,
+            "price": "1.0(可抵扣)",
             "productId": 5,
             "stock": 2,
              "specImg":"http://wx1.sinaimg.cn/mw600/0072bW0Xly1fo8zz4znwyj30hq0qoabz.jpg"
@@ -159,7 +159,7 @@ class AtyMainActivity : AppCompatActivity() {
             "comb": "3,6,24,18",
             "desc": "红色-20KG-江油-10",
             "id": 11,
-            "price": 1.0,
+            "price": "1.0(可抵扣)",
             "productId": 5,
             "stock": 2,
             "specImg":"http://wx2.sinaimg.cn/mw600/0072bW0Xly1fo8zf0pn15j30ia0tzdox.jpg"

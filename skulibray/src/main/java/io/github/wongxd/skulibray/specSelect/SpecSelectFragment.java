@@ -263,7 +263,7 @@ public class SpecSelectFragment extends android.support.v4.app.DialogFragment im
      */
     private String specId = "null";
 
-    private String price = "";
+    private CharSequence price = "";
 
     private long productStock = 0;
 

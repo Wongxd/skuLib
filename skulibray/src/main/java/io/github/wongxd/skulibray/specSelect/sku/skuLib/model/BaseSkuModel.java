@@ -8,22 +8,22 @@ package io.github.wongxd.skulibray.specSelect.sku.skuLib.model;
 public class BaseSkuModel {
 
     //base 属性
-    private String price;//价格
+    private CharSequence price;//价格
     private int stock;//库存
 
     public BaseSkuModel() {
     }
 
-    public BaseSkuModel(String price, int stock) {
+    public BaseSkuModel(CharSequence price, int stock) {
         this.price = price;
         this.stock = stock;
     }
 
-    public String getPrice() {
+    public CharSequence getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(CharSequence price) {
         this.price = price;
     }
 

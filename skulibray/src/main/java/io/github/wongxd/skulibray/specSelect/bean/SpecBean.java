@@ -124,7 +124,7 @@ public class SpecBean {
         private String comb;  // 有的 后台 使用 组合 去判断选择的规格
         private String desc;
         private String specImg = ""; // 当前规格 对应的图片(非必需)
-        private double price;
+        private String price;
 
         public long getId() {
             return id;
@@ -174,11 +174,11 @@ public class SpecBean {
             this.desc = desc;
         }
 
-        public double getPrice() {
+        public String getPrice() {
             return price;
         }
 
-        public void setPrice(double price) {
+        public void setPrice(String price) {
             this.price = price;
         }
 
