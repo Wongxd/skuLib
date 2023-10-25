@@ -1,8 +1,8 @@
 # skuLib
 
+quickly implement product SKU on Android.
 
-
-快速实现商品规格选择
+快速实现商品规格选择。
 
 实现类似淘宝规格选择的效果。
 
